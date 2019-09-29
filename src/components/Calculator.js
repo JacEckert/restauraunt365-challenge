@@ -6,7 +6,7 @@ import React, {Component} from "react"
 //////////////////////
 
 ////////////
-// Step 3 //
+// Step 4 //
 ////////////
 
 class Calculator extends Component {
@@ -44,12 +44,17 @@ class Calculator extends Component {
 		
 		let array = noNewLine.split(",")
 		let result = 0
+		let negatives = []
 		array.map(item => {
 			let num = Number(item)
 			if(!isNaN(num))
-				result += num
+				if(num >= 0)
+					result += num
+				else
+					negatives.push(num)
 		})
-		
+		if(negatives[0])
+			alert("\"" + inString + "\" has negatives: " + negatives)
 		return [array,result]
 	}
 	
