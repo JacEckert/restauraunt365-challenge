@@ -21,7 +21,7 @@ class Calculator extends Component {
 			out: ""
 		}
 		this.handleSubmit = this.handleSubmit.bind(this)
-		this.addTwo = this.addTwo.bind(this)
+		this.addAll = this.addAll.bind(this)
 	}
 	
 	//fetches from input field on submit, calls adding function
@@ -29,7 +29,7 @@ class Calculator extends Component {
 	handleSubmit(event) {
 		if(event) event.preventDefault()
 		let [input] = event.target.children
-		let result = this.addTwo(input.value)
+		let result = this.addAll(input.value)
 		this.setState({
 			str: input.value,
 			arr: result[0],
@@ -37,21 +37,16 @@ class Calculator extends Component {
 		})
 	}
 	
-	//Splits an array on ',' then returns the first two values
+	//Splits an array on ',' then returns the values
 		//to zero if they're valid numbers
-	addTwo(inString) {
+	addAll(inString) {
 		let array = inString.split(",")
 		let result = 0
-		if(array[0]) {
-			let num2 = Number(array[0])
-			if(!isNaN(num2))
-				result+= num2
-		}
-		if(array[1]) {
-			let num2 = Number(array[1])
-			if(!isNaN(num2))
-				result+= num2
-		}
+		array.map(item => {
+			let num = Number(item)
+			if(!isNaN(num))
+				result += num
+		})
 		
 		return [array,result]
 	}
@@ -63,16 +58,16 @@ class Calculator extends Component {
 			"1,5000,100",
 			"1,-3",
 			"-1,3",
-			"-1,-3",
+			"-1,-3,-3",
 			"1.1",
-			"1.1,2.2",
+			"1.1,2.2,2",
 			"one",
 			"one,two",
-			"one,two,three",
+			"1,2two,three",
 			""
 		]
 		tests.map(item => {
-			{console.log(item + " : " + this.addTwo(item))}
+			{console.log(item + " : " + this.addAll(item))}
 		})
 	
 	
