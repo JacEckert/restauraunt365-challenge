@@ -6,7 +6,7 @@ import React, {Component} from "react"
 //////////////////////
 
 ////////////
-// Step 1 //
+// Step 3 //
 ////////////
 
 class Calculator extends Component {
@@ -40,7 +40,9 @@ class Calculator extends Component {
 	//Splits an array on ',' then returns the values
 		//to zero if they're valid numbers
 	addAll(inString) {
-		let array = inString.split(",")
+		var noNewLine = inString.replace("\\n", ",")
+		
+		let array = noNewLine.split(",")
 		let result = 0
 		array.map(item => {
 			let num = Number(item)
