@@ -6,7 +6,7 @@ import React, {Component} from "react"
 //////////////////////
 
 ////////////
-// Step 4 //
+// Step 5 //
 ////////////
 
 class Calculator extends Component {
@@ -47,7 +47,7 @@ class Calculator extends Component {
 		let negatives = []
 		array.map(item => {
 			let num = Number(item)
-			if(!isNaN(num))
+			if(!isNaN(num) && num <= 1000)
 				if(num >= 0)
 					result += num
 				else
