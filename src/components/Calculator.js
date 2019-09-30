@@ -6,7 +6,7 @@ import React, {Component} from "react"
 //////////////////////
 
 ////////////
-// Step 5 //
+// Step 6 //
 ////////////
 
 class Calculator extends Component {
@@ -22,6 +22,7 @@ class Calculator extends Component {
 		}
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.addAll = this.addAll.bind(this)
+		this.checkRegEx = this.checkRegEx.bind(this)
 	}
 	
 	//fetches from input field on submit, calls adding function
@@ -37,10 +38,12 @@ class Calculator extends Component {
 		})
 	}
 	
-	//Splits an array on ',' then returns the values
+	//Splits an array on ',' and \n then returns the values added
 		//to zero if they're valid numbers
+		//"valid number" = an actual number, <= 1000, positive
 	addAll(inString) {
-		var noNewLine = inString.replace("\\n", ",")
+		let noNewDelim = this.checkRegEx(inString)
+		let noNewLine = noNewDelim.replace(/\n/g, ",")
 		
 		let array = noNewLine.split(",")
 		let result = 0
@@ -58,30 +61,46 @@ class Calculator extends Component {
 		return [array,result]
 	}
 	
+	//searches for new delimeter by regex
+		//if found, replaces all instances with ,
+		//else, returns original string
+	checkRegEx(inString) {
+		let regEx = /\/\/.\n/
+		let test = inString.search(regEx)
+		if(test !== -1) {
+			let delim = inString.charAt(2)
+			let removeDelim = inString.replace(regEx, ",")
+			return removeDelim.replace(new RegExp(delim, "g"), ",")
+		}
+		else
+			return inString
+	}
+	
 	render() {
 	
 		let tests = ["20",
 			"1,5000",
-			"1,5000,100",
+			"1,5000,100\n40",
 			"1,-3",
 			"-1,3",
-			"-1,-3,-3",
 			"1.1",
 			"1.1,2.2,2",
 			"one",
 			"one,two",
 			"1,2two,three",
-			""
+			"",
+			"//a\n1a3\ncata3b4a2",
+			"//aa\n1a3\ncata3b4a2"
 		]
 		tests.map(item => {
-			{console.log(item + " : " + this.addAll(item))}
+			console.log(item + " : " + this.addAll(item))
 		})
 	
 	
 		return (
 			<div>
 				<form onSubmit={this.handleSubmit}>
-					<input
+					<textarea
 						placeholder="Input String"
 						type="text"
 					/>
