@@ -1,0 +1,30 @@
+body {
+	background-color: powderblue;
+}
+
+.calculator {
+	background-color:whitesmoke;
+	margin: auto;
+	width: 50%;
+    border: 1px solid #000;
+	border-radius: 15px;
+    padding: 30px;
+
+}
+
+form {
+	display: flex;
+}
+
+textarea {
+	max-width: 100%;
+}
+
+h1 {
+	font-size: 1.5em;
+}
+
+
+button {
+	font-size: 1.5em;
+}

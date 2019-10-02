@@ -140,7 +140,7 @@ class Calculator extends Component {
 	
 	
 		return (
-			<div>
+			<div className="calculator">
 				<form onSubmit={this.handleSubmit}>
 					<textarea
 						placeholder="Input String"
@@ -148,12 +148,7 @@ class Calculator extends Component {
 					/>
 					<button>Submit</button>
 				</form>
-					
-				<p>Input: {this.state.str}</p>
-				Array: <ul>{this.state.arr.map(item => {
-					return <li>{item}</li>
-				})}</ul>
-				<p>Output: {this.state.out}</p>
+				<h1>Output: {this.state.out}</h1>
 				
 			</div>
 		)
