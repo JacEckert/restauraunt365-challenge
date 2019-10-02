@@ -6,7 +6,7 @@ import React, {Component} from "react"
 //////////////////////
 
 ////////////
-// Step 6 //
+// Step 7 //
 ////////////
 
 class Calculator extends Component {
@@ -23,6 +23,7 @@ class Calculator extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.addAll = this.addAll.bind(this)
 		this.checkRegEx = this.checkRegEx.bind(this)
+		this.checkRegExLong = this.checkRegExLong.bind(this)
 	}
 	
 	//fetches from input field on submit, calls adding function
@@ -43,7 +44,8 @@ class Calculator extends Component {
 		//"valid number" = an actual number, <= 1000, positive
 	addAll(inString) {
 		let noNewDelim = this.checkRegEx(inString)
-		let noNewLine = noNewDelim.replace(/\n/g, ",")
+		let noNewDelimLong = this.checkRegExLong(noNewDelim)
+		let noNewLine = noNewDelimLong.replace(/\n/g, ",")
 		
 		let array = noNewLine.split(",")
 		let result = 0
@@ -76,6 +78,19 @@ class Calculator extends Component {
 			return inString
 	}
 	
+	checkRegExLong(inString) {
+		let regEx = /\/\/\[.+\]\n/
+		let test = inString.search(regEx)
+		if(test !== -1) {
+			let delim = inString.match(regEx).toString()
+			let toCut = delim.substring(3, delim.length-2)
+			let removeDelim = inString.replace(regEx, ",")
+			return removeDelim.replace(RegExp(toCut, "g"), ",")
+		}
+		else
+			return inString
+	}
+	
 	render() {
 	
 		let tests = ["20",
@@ -90,7 +105,7 @@ class Calculator extends Component {
 			"1,2two,three",
 			"",
 			"//a\n1a3\ncata3b4a2",
-			"//aa\n1a3\ncata3b4a2"
+			"//aa\n1a3\ncaata3b4aa2"
 		]
 		tests.map(item => {
 			console.log(item + " : " + this.addAll(item))
