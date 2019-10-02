@@ -6,7 +6,7 @@ import React, {Component} from "react"
 //////////////////////
 
 ////////////
-// Step 7 //
+// Step 8 //
 ////////////
 
 class Calculator extends Component {
@@ -24,6 +24,7 @@ class Calculator extends Component {
 		this.addAll = this.addAll.bind(this)
 		this.checkRegEx = this.checkRegEx.bind(this)
 		this.checkRegExLong = this.checkRegExLong.bind(this)
+		this.checkRegExMany = this.checkRegExMany.bind(this)
 	}
 	
 	//fetches from input field on submit, calls adding function
@@ -52,11 +53,12 @@ class Calculator extends Component {
 		let negatives = []
 		array.map(item => {
 			let num = Number(item)
-			if(!isNaN(num) && num <= 1000)
+			if(!isNaN(num) && num <= 1000) {
 				if(num >= 0)
 					result += num
 				else
 					negatives.push(num)
+			}
 		})
 		if(negatives[0])
 			alert("\"" + inString + "\" has negatives: " + negatives)
@@ -78,17 +80,40 @@ class Calculator extends Component {
 			return inString
 	}
 	
+	//searches for a delimeter of length > 1
+		//if found, tests if the string contains a set of delimeters
+			//if yes, calls returns checkRegExMany
+			//else, returns a string with all instances of the delimeter
+				//replaced by ','
+		//else, returns the original string
 	checkRegExLong(inString) {
 		let regEx = /\/\/\[.+\]\n/
 		let test = inString.search(regEx)
 		if(test !== -1) {
 			let delim = inString.match(regEx).toString()
-			let toCut = delim.substring(3, delim.length-2)
-			let removeDelim = inString.replace(regEx, ",")
-			return removeDelim.replace(RegExp(toCut, "g"), ",")
+			if(delim.includes("[") && delim.includes("]")) {
+				return this.checkRegExMany(regEx, delim, inString)
+			}
+			else {
+				delim = inString.match(regEx).toString()
+				let toCut = delim.substring(3, delim.length-2)
+				let removeDelim = inString.replace(regEx, ",")
+				return removeDelim.replace(RegExp(toCut, "g"), ",")
+			}
 		}
 		else
 			return inString
+	}
+	
+	//searches for a set of new delimeters by regex
+		//returns a string with all instances replaced by ','
+	checkRegExMany(regEx, delim, inString) {
+		let toCut = delim.match(/\[.+?\]/g)
+		let removeDelim = inString.replace(regEx, ",")
+		toCut.map(item => 
+			removeDelim = removeDelim.replace(RegExp(item.substring(1, item.length-1), "g"), ",")
+		)
+		return removeDelim
 	}
 	
 	render() {
@@ -105,11 +130,13 @@ class Calculator extends Component {
 			"1,2two,three",
 			"",
 			"//a\n1a3\ncata3b4a2",
-			"//aa\n1a3\ncaata3b4aa2"
+			"//aa\n1a3\ncaata3b4aa2",
+			"//[aa]\n1a3\ncaata3b4aa2",
+			"//[one][two]\none1two2three"
 		]
-		tests.map(item => {
-			console.log(item + " : " + this.addAll(item))
-		})
+		tests.map(item => 
+			console.log(item + " : " + this.addAll(item)[1])
+		)
 	
 	
 		return (
